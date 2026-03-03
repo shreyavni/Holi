@@ -1,1069 +1,2019 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HoliAI — Festival of Colors Greetings</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-<style>
-:root {
-  --pink: #FF3CAC;
-  --purple: #784BA0;
-  --blue: #2B86C5;
-  --orange: #FF6B35;
-  --yellow: #FFD700;
-  --green: #00C851;
-  --bg: #0a0012;
-  --card-bg: rgba(255,255,255,0.05);
-  --text: #fff;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
-  cursor: none;
-}
-
-/* Custom Cursor */
-#cursor {
-  width: 20px; height: 20px;
-  border: 2px solid var(--pink);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none; z-index: 9999;
-  mix-blend-mode: difference;
-  transition: transform 0.1s;
-}
-#cursor-dot {
-  width: 6px; height: 6px;
-  background: var(--yellow);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none; z-index: 9999;
-}
-
-/* Floating Color Orbs Background */
-#bg-canvas {
-  position: fixed; inset: 0;
-  z-index: 0; pointer-events: none;
-}
-
-/* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 20px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(10,0,18,0.6);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,60,172,0.2);
-}
-
-.logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem; font-weight: 900;
-  background: linear-gradient(135deg, var(--pink), var(--yellow), var(--green));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.nav-links { display: flex; gap: 30px; }
-.nav-links a {
-  color: rgba(255,255,255,0.7);
-  text-decoration: none; font-size: 0.9rem; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  transition: color 0.3s;
-}
-.nav-links a:hover { color: var(--pink); }
-
-/* HERO */
-#hero {
-  position: relative; z-index: 1;
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 20px 60px;
-  overflow: hidden;
-}
-
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,60,172,0.15);
-  border: 1px solid rgba(255,60,172,0.4);
-  border-radius: 100px;
-  padding: 8px 20px; margin-bottom: 30px;
-  font-size: 0.8rem; font-weight: 600;
-  color: var(--pink); letter-spacing: 0.1em; text-transform: uppercase;
-}
-.hero-badge span { display: inline-block; width: 8px; height: 8px; background: var(--pink); border-radius: 50%; animation: pulse 1.5s infinite; }
-
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
-
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 900; line-height: 1;
-  margin-bottom: 20px;
-}
-.hero-title .line1 { display: block; color: #fff; }
-.hero-title .line2 {
-  display: block;
-  background: linear-gradient(135deg, var(--pink) 0%, var(--yellow) 50%, var(--green) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-subtitle {
-  font-size: 1.1rem; color: rgba(255,255,255,0.6);
-  max-width: 500px; line-height: 1.8; margin-bottom: 50px;
-}
-
-.hero-cta {
-  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-}
-
-.btn-primary {
-  padding: 16px 40px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  color: #fff; border: none; border-radius: 100px;
-  font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
-  cursor: none; transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 0 30px rgba(255,60,172,0.4);
-  letter-spacing: 0.05em;
-}
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 50px rgba(255,60,172,0.6);
-}
-
-.btn-secondary {
-  padding: 16px 40px;
-  background: transparent;
-  color: #fff; border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 100px;
-  font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600;
-  cursor: none; transition: all 0.2s;
-}
-.btn-secondary:hover { border-color: var(--yellow); color: var(--yellow); }
-
-/* FLOATING COLORS */
-.color-burst {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-/* SECTION */
-section { position: relative; z-index: 1; }
-
-.section-header {
-  text-align: center; padding: 80px 20px 40px;
-}
-.section-label {
-  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--pink); font-weight: 700; margin-bottom: 12px;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900; color: #fff;
-}
-.section-title span {
-  background: linear-gradient(135deg, var(--orange), var(--yellow));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* TEMPLATES GRID */
-#templates-section { padding: 20px 40px 80px; }
-
-.filter-bar {
-  display: flex; gap: 12px; justify-content: center;
-  flex-wrap: wrap; margin-bottom: 40px;
-}
-.filter-btn {
-  padding: 8px 22px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent; color: rgba(255,255,255,0.6);
-  border-radius: 100px; font-family: 'Poppins', sans-serif;
-  font-size: 0.85rem; font-weight: 600; cursor: none;
-  transition: all 0.3s;
-}
-.filter-btn.active, .filter-btn:hover {
-  background: var(--pink); border-color: var(--pink); color: #fff;
-}
-
-.templates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px; max-width: 1200px; margin: 0 auto;
-}
-
-.template-card {
-  border-radius: 20px; overflow: hidden;
-  position: relative; cursor: none;
-  transition: transform 0.3s;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-.template-card:hover { transform: translateY(-8px); }
-
-.template-canvas {
-  width: 100%; height: 240px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 30px;
-  position: relative; overflow: hidden;
-}
-
-.template-overlay {
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,0); display: flex;
-  align-items: center; justify-content: center;
-  opacity: 0; transition: all 0.3s; gap: 12px;
-}
-.template-card:hover .template-overlay {
-  background: rgba(0,0,0,0.6); opacity: 1;
-}
-
-.template-action {
-  padding: 10px 20px; border-radius: 100px;
-  font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700;
-  border: none; cursor: none;
-}
-.use-btn { background: var(--pink); color: #fff; }
-.edit-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-
-.template-info {
-  padding: 16px 20px;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(10px);
-}
-.template-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
-.template-style { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
-
-/* TEMPLATE STYLES */
-.t-vibrant {
-  background: linear-gradient(135deg, #FF6B35, #FFD700, #FF3CAC);
-}
-.t-vibrant h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-.t-vibrant p { color: rgba(255,255,255,0.9); font-size: 0.85rem; margin-top: 8px; }
-
-.t-dark {
-  background: #1a0030;
-  border: 2px solid rgba(255,60,172,0.3);
-}
-.t-dark h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; background: linear-gradient(135deg,#FF3CAC,#FFD700); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.t-dark p { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 8px; }
-
-.t-pastel {
-  background: linear-gradient(135deg, #FFB3C6, #FFDAB9, #B8F0D3);
-}
-.t-pastel h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #5c2a7a; }
-.t-pastel p { color: #7a4a8a; font-size: 0.85rem; margin-top: 8px; }
-
-.t-cosmic {
-  background: radial-gradient(ellipse at center, #0d0d2b 0%, #1a0040 100%);
-}
-.t-cosmic h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff; }
-.t-cosmic p { color: rgba(255,215,0,0.8); font-size: 0.85rem; margin-top: 8px; }
-.stars { position: absolute; inset: 0; }
-
-.t-watercolor {
-  background: linear-gradient(135deg, rgba(255,107,53,0.8), rgba(120,75,160,0.8), rgba(43,134,197,0.8));
-}
-.t-watercolor h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff; font-style: italic; text-shadow: 3px 3px 15px rgba(0,0,0,0.3); }
-.t-watercolor p { color: rgba(255,255,255,0.9); font-size: 0.85rem; margin-top: 8px; }
-
-.t-minimal {
-  background: #fff;
-}
-.t-minimal h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #1a0030; }
-.t-minimal p { color: #666; font-size: 0.85rem; margin-top: 8px; }
-
-.t-retro {
-  background: #2d1b00;
-  border: 3px solid #FF6B35;
-}
-.t-retro h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #FFD700; letter-spacing: 2px; }
-.t-retro p { color: #FF6B35; font-size: 0.85rem; margin-top: 8px; font-weight: 600; }
-
-.t-neon {
-  background: #000;
-  box-shadow: inset 0 0 40px rgba(0,200,81,0.1);
-}
-.t-neon h2 { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: #00C851; text-shadow: 0 0 20px #00C851, 0 0 40px #00C851; font-weight: 800; }
-.t-neon p { color: #FF3CAC; font-size: 0.85rem; margin-top: 8px; text-shadow: 0 0 10px #FF3CAC; }
-
-/* COLOR SPLASHES */
-.splash {
-  position: absolute; border-radius: 50%;
-  opacity: 0.6; pointer-events: none;
-}
-
-/* AI EDITOR SECTION */
-#editor-section {
-  padding: 40px;
-  max-width: 1100px; margin: 0 auto 80px;
-}
-
-.editor-wrapper {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,60,172,0.2);
-  border-radius: 28px; overflow: hidden;
-  backdrop-filter: blur(10px);
-}
-
-.editor-header {
-  padding: 24px 32px;
-  background: rgba(255,60,172,0.08);
-  border-bottom: 1px solid rgba(255,60,172,0.2);
-  display: flex; align-items: center; gap: 16px;
-}
-
-.editor-header-icon {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-}
-
-.editor-header h3 { font-size: 1.2rem; font-weight: 700; }
-.editor-header p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
-
-.editor-body {
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 500px;
-}
-
-@media (max-width: 768px) {
-  .editor-body { grid-template-columns: 1fr; }
-}
-
-.editor-left { padding: 32px; border-right: 1px solid rgba(255,255,255,0.08); }
-
-.editor-label {
-  font-size: 0.75rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--pink);
-  font-weight: 700; margin-bottom: 12px;
-}
-
-.selected-preview {
-  width: 100%; height: 180px; border-radius: 16px;
-  overflow: hidden; margin-bottom: 24px;
-  border: 2px solid rgba(255,60,172,0.3);
-  position: relative; display: flex;
-  align-items: center; justify-content: center;
-}
-
-#selected-template-display {
-  width: 100%; height: 100%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 20px;
-}
-
-.ai-prompt-box {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px; padding: 16px;
-  margin-bottom: 16px;
-}
-
-.ai-prompt-box textarea {
-  width: 100%; background: transparent;
-  border: none; outline: none; color: #fff;
-  font-family: 'Poppins', sans-serif; font-size: 0.9rem;
-  resize: none; min-height: 90px;
-  line-height: 1.6;
-}
-
-.ai-prompt-box textarea::placeholder { color: rgba(255,255,255,0.3); }
-
-.prompt-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
-.btn-ai {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  color: #fff; border: none; border-radius: 12px;
-  font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700;
-  cursor: none; transition: all 0.2s; flex: 1;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.btn-ai:hover { box-shadow: 0 5px 25px rgba(255,60,172,0.5); transform: translateY(-2px); }
-.btn-ai:disabled { opacity: 0.6; }
-
-.btn-outline-sm {
-  padding: 10px 16px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent; color: rgba(255,255,255,0.7);
-  border-radius: 10px; font-family: 'Poppins', sans-serif;
-  font-size: 0.78rem; font-weight: 600; cursor: none;
-  transition: all 0.2s;
-}
-.btn-outline-sm:hover { border-color: var(--yellow); color: var(--yellow); }
-
-.suggestion-chips {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
-}
-.chip {
-  padding: 6px 14px;
-  background: rgba(255,215,0,0.1);
-  border: 1px solid rgba(255,215,0,0.3);
-  border-radius: 100px; color: var(--yellow);
-  font-size: 0.75rem; font-weight: 600; cursor: none;
-  transition: all 0.2s;
-}
-.chip:hover { background: rgba(255,215,0,0.2); }
-
-/* Editor Right - Preview */
-.editor-right { padding: 32px; display: flex; flex-direction: column; }
-
-.preview-container {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-
-#final-preview {
-  width: 340px; height: 280px;
-  border-radius: 16px; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  position: relative;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 30px;
-  transition: all 0.5s;
-}
-
-.preview-controls {
-  display: flex; gap: 10px; margin-top: 20px; justify-content: center;
-}
-
-/* AI Thinking indicator */
-.ai-thinking {
-  display: none; align-items: center; gap: 10px;
-  color: var(--pink); font-size: 0.85rem; font-weight: 600;
-  margin: 10px 0;
-}
-.ai-thinking.show { display: flex; }
-.dot-wave { display: flex; gap: 4px; }
-.dot-wave span {
-  width: 6px; height: 6px; background: var(--pink);
-  border-radius: 50%; animation: wave 1.2s infinite;
-}
-.dot-wave span:nth-child(2) { animation-delay: 0.2s; }
-.dot-wave span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes wave { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-
-/* MODAL */
-.modal-backdrop {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.modal-backdrop.open { opacity: 1; pointer-events: all; }
-
-.modal {
-  background: #120020;
-  border: 1px solid rgba(255,60,172,0.3);
-  border-radius: 24px; padding: 40px;
-  max-width: 480px; width: 90%;
-  transform: scale(0.9); transition: transform 0.3s;
-  text-align: center;
-}
-.modal-backdrop.open .modal { transform: scale(1); }
-
-.modal h3 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 12px; }
-.modal p { color: rgba(255,255,255,0.6); margin-bottom: 30px; line-height: 1.7; }
-
-#modal-preview {
-  width: 100%; height: 200px; border-radius: 12px;
-  overflow: hidden; margin-bottom: 24px;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.download-options { display: flex; gap: 12px; justify-content: center; }
-
-/* Particles */
-.color-particle {
-  position: fixed;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  pointer-events: none; z-index: 50;
-  animation: fall 3s ease-in forwards;
-}
-@keyframes fall {
-  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-
-/* TOAST */
-.toast {
-  position: fixed; bottom: 30px; right: 30px;
-  background: rgba(255,60,172,0.9); color: #fff;
-  padding: 14px 24px; border-radius: 12px;
-  font-size: 0.9rem; font-weight: 600; z-index: 300;
-  transform: translateY(100px); opacity: 0;
-  transition: all 0.3s;
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-
-/* API Key Bar */
-.api-key-wrapper {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-}
-.api-provider-toggle {
-  display: flex; background: rgba(255,255,255,0.06); border-radius: 20px;
-  padding: 3px; border: 1px solid rgba(255,255,255,0.1);
-}
-.provider-btn {
-  padding: 5px 14px; border-radius: 16px; border: none;
-  background: transparent; color: rgba(255,255,255,0.5);
-  font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700;
-  cursor: none; transition: all 0.2s; letter-spacing: 0.04em;
-}
-.provider-btn.active { background: var(--pink); color: #fff; }
-
-.api-key-field { display: flex; align-items: center; gap: 6px; }
-.api-key-field input {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 10px; padding: 7px 14px;
-  color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.78rem;
-  width: 200px; transition: border-color 0.2s; outline: none;
-}
-.api-key-field input:focus { border-color: var(--pink); }
-.api-key-field input::placeholder { color: rgba(255,255,255,0.3); }
-.api-save-btn {
-  padding: 7px 14px; border-radius: 10px;
-  background: rgba(255,60,172,0.2); border: 1px solid rgba(255,60,172,0.5);
-  color: var(--pink); font-family: 'Poppins', sans-serif; font-size: 0.78rem;
-  font-weight: 700; cursor: none; transition: all 0.2s;
-}
-.api-save-btn:hover { background: rgba(255,60,172,0.35); }
-.api-status {
-  font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.3);
-  white-space: nowrap; transition: color 0.3s;
-}
-.api-status.connected { color: var(--green); }
-.api-status.error { color: #ff6b6b; }
-
-/* Creativity slider */
-.creativity-row {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
-  border-radius: 12px; padding: 12px 16px;
-}
-.creativity-label {
-  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
-  font-weight: 700; color: var(--yellow); white-space: nowrap; min-width: 80px;
-}
-.creativity-slider {
-  flex: 1; appearance: none; -webkit-appearance: none;
-  height: 4px; border-radius: 2px; outline: none;
-  background: linear-gradient(90deg, var(--green), var(--yellow), var(--pink));
-  cursor: none;
-}
-.creativity-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 16px; height: 16px;
-  border-radius: 50%; background: #fff;
-  box-shadow: 0 0 8px rgba(255,215,0,0.6); cursor: none;
-}
-.creativity-val {
-  font-size: 0.85rem; font-weight: 800; color: var(--yellow);
-  min-width: 28px; text-align: right;
-}
-
-/* Mode pills */
-.mode-pills {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
-}
-.mode-pill {
-  padding: 5px 14px; border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: transparent; color: rgba(255,255,255,0.5);
-  font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600;
-  cursor: none; transition: all 0.2s; letter-spacing: 0.03em;
-}
-.mode-pill.active { background: rgba(255,60,172,0.2); border-color: var(--pink); color: var(--pink); }
-.mode-pill:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
-
-/* Active template indicator */
-.active-tpl-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3);
-  border-radius: 20px; padding: 4px 12px; margin-bottom: 12px;
-  font-size: 0.72rem; font-weight: 700; color: var(--yellow);
-}
-.active-tpl-badge .dot { width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; animation: pulse 1.5s infinite; }
-
-/* template-card selected state */
-.template-card.selected { box-shadow: 0 0 0 3px var(--pink), 0 8px 30px rgba(255,60,172,0.4); transform: translateY(-8px); }
-
-@media (max-width: 900px) {
-  .api-key-wrapper { display: none; }
-}
-
-  text-align: center; padding: 40px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.3); font-size: 0.85rem;
-  position: relative; z-index: 1;
-}
-footer span { color: var(--pink); }
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 3px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HoliAI — Festival of Colors Greetings</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;800&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  <style>
+    :root {
+      --pink: #FF3CAC;
+      --purple: #784BA0;
+      --blue: #2B86C5;
+      --orange: #FF6B35;
+      --yellow: #FFD700;
+      --green: #00C851;
+      --bg: #0a0012;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --text: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    #cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--pink);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.1s;
+    }
+
+    #cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--yellow);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Floating Color Orbs Background */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 0, 18, 0.6);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 60, 172, 0.2);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--pink), var(--yellow), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--pink);
+    }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 60, 172, 0.15);
+      border: 1px solid rgba(255, 60, 172, 0.4);
+      border-radius: 100px;
+      padding: 8px 20px;
+      margin-bottom: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--pink);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--pink);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.5)
+      }
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .line1 {
+      display: block;
+      color: #fff;
+    }
+
+    .hero-title .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--yellow) 50%, var(--green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 500px;
+      line-height: 1.8;
+      margin-bottom: 50px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(255, 60, 172, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 50px rgba(255, 60, 172, 0.6);
+    }
+
+    .btn-secondary {
+      padding: 16px 40px;
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    /* FLOATING COLORS */
+    .color-burst {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* SECTION */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* TEMPLATES GRID */
+    #templates-section {
+      padding: 20px 40px 80px;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      padding: 8px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--pink);
+      border-color: var(--pink);
+      color: #fff;
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .template-card {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+      transition: transform 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .template-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .template-canvas {
+      width: 100%;
+      height: 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .template-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s;
+      gap: 12px;
+    }
+
+    .template-card:hover .template-overlay {
+      background: rgba(0, 0, 0, 0.6);
+      opacity: 1;
+    }
+
+    .template-action {
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: none;
+      cursor: none;
+    }
+
+    .use-btn {
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .edit-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .template-info {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .template-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .template-style {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* TEMPLATE STYLES */
+    .t-vibrant {
+      background: linear-gradient(135deg, #FF6B35, #FFD700, #FF3CAC);
+    }
+
+    .t-vibrant h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .t-vibrant p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .t-dark {
+      background: #1a0030;
+      border: 2px solid rgba(255, 60, 172, 0.3);
+    }
+
+    .t-dark h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #FF3CAC, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .t-dark p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .t-pastel {
+      background: linear-gradient(135deg, #FFB3C6, #FFDAB9, #B8F0D3);
+    }
+
+    .t-pastel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #5c2a7a;
+    }
+
+    .t-pastel p {
+      color: #7a4a8a;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .t-cosmic {
+      background: radial-gradient(ellipse at center, #0d0d2b 0%, #1a0040 100%);
+    }
+
+    .t-cosmic h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+
+    .t-cosmic p {
+      color: rgba(255, 215, 0, 0.8);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+    }
+
+    .t-watercolor {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.8), rgba(120, 75, 160, 0.8), rgba(43, 134, 197, 0.8));
+    }
+
+    .t-watercolor h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #fff;
+      font-style: italic;
+      text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .t-watercolor p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .t-minimal {
+      background: #fff;
+    }
+
+    .t-minimal h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #1a0030;
+    }
+
+    .t-minimal p {
+      color: #666;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .t-retro {
+      background: #2d1b00;
+      border: 3px solid #FF6B35;
+    }
+
+    .t-retro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #FFD700;
+      letter-spacing: 2px;
+    }
+
+    .t-retro p {
+      color: #FF6B35;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .t-neon {
+      background: #000;
+      box-shadow: inset 0 0 40px rgba(0, 200, 81, 0.1);
+    }
+
+    .t-neon h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
+      color: #00C851;
+      text-shadow: 0 0 20px #00C851, 0 0 40px #00C851;
+      font-weight: 800;
+    }
+
+    .t-neon p {
+      color: #FF3CAC;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      text-shadow: 0 0 10px #FF3CAC;
+    }
+
+    /* COLOR SPLASHES */
+    .splash {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* AI EDITOR SECTION */
+    #editor-section {
+      padding: 40px;
+      max-width: 1100px;
+      margin: 0 auto 80px;
+    }
+
+    .editor-wrapper {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 60, 172, 0.2);
+      border-radius: 28px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .editor-header {
+      padding: 24px 32px;
+      background: rgba(255, 60, 172, 0.08);
+      border-bottom: 1px solid rgba(255, 60, 172, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .editor-header-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .editor-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .editor-header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .editor-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 500px;
+    }
+
+    @media (max-width: 768px) {
+      .editor-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .editor-left {
+      padding: 32px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .editor-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .selected-preview {
+      width: 100%;
+      height: 180px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 2px solid rgba(255, 60, 172, 0.3);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #selected-template-display {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .ai-prompt-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .ai-prompt-box textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      resize: none;
+      min-height: 90px;
+      line-height: 1.6;
+    }
+
+    .ai-prompt-box textarea::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .prompt-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ai {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: none;
+      transition: all 0.2s;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-ai:hover {
+      box-shadow: 0 5px 25px rgba(255, 60, 172, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-ai:disabled {
+      opacity: 0.6;
+    }
+
+    .btn-outline-sm {
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.2s;
+    }
+
+    .btn-outline-sm:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    .suggestion-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 100px;
+      color: var(--yellow);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(255, 215, 0, 0.2);
+    }
+
+    /* Editor Right - Preview */
+    .editor-right {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #final-preview {
+      width: 340px;
+      height: 280px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      transition: all 0.5s;
+    }
+
+    .preview-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+    /* AI Thinking indicator */
+    .ai-thinking {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      color: var(--pink);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin: 10px 0;
+    }
+
+    .ai-thinking.show {
+      display: flex;
+    }
+
+    .dot-wave {
+      display: flex;
+      gap: 4px;
+    }
+
+    .dot-wave span {
+      width: 6px;
+      height: 6px;
+      background: var(--pink);
+      border-radius: 50%;
+      animation: wave 1.2s infinite;
+    }
+
+    .dot-wave span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .dot-wave span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes wave {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: #120020;
+      border: 1px solid rgba(255, 60, 172, 0.3);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 480px;
+      width: 90%;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+      text-align: center;
+    }
+
+    .modal-backdrop.open .modal {
+      transform: scale(1);
+    }
+
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .modal p {
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+
+    #modal-preview {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .download-options {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    /* Particles */
+    .color-particle {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 50;
+      animation: fall 3s ease-in forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(255, 60, 172, 0.9);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 300;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* API Key Bar */
+    .api-key-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .api-provider-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .provider-btn {
+      padding: 5px 14px;
+      border-radius: 16px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: none;
+      transition: all 0.2s;
+      letter-spacing: 0.04em;
+    }
+
+    .provider-btn.active {
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .api-key-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .api-key-field input {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 7px 14px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      width: 200px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .api-key-field input:focus {
+      border-color: var(--pink);
+    }
+
+    .api-key-field input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .api-save-btn {
+      padding: 7px 14px;
+      border-radius: 10px;
+      background: rgba(255, 60, 172, 0.2);
+      border: 1px solid rgba(255, 60, 172, 0.5);
+      color: var(--pink);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: none;
+      transition: all 0.2s;
+    }
+
+    .api-save-btn:hover {
+      background: rgba(255, 60, 172, 0.35);
+    }
+
+    .api-status {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.3);
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+
+    .api-status.connected {
+      color: var(--green);
+    }
+
+    .api-status.error {
+      color: #ff6b6b;
+    }
+
+    /* Creativity slider */
+    .creativity-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      background: rgba(255, 215, 0, 0.06);
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .creativity-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--yellow);
+      white-space: nowrap;
+      min-width: 80px;
+    }
+
+    .creativity-slider {
+      flex: 1;
+      appearance: none;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      outline: none;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--pink));
+      cursor: none;
+    }
+
+    .creativity-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+      cursor: none;
+    }
+
+    .creativity-val {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--yellow);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    /* Mode pills */
+    .mode-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .mode-pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .mode-pill.active {
+      background: rgba(255, 60, 172, 0.2);
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    .mode-pill:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+    }
+
+    /* Active template indicator */
+    .active-tpl-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--yellow);
+    }
+
+    .active-tpl-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--yellow);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* template-card selected state */
+    .template-card.selected {
+      box-shadow: 0 0 0 3px var(--pink), 0 8px 30px rgba(255, 60, 172, 0.4);
+      transform: translateY(-8px);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span {
+      color: var(--pink);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--pink);
+      border-radius: 3px;
+    }
+
+    /* ============================
+   RESPONSIVE DESIGN
+   ============================ */
+
+    /* Hide custom cursor on touch devices */
+    @media (pointer: coarse) {
+
+      #cursor,
+      #cursor-dot {
+        display: none !important;
+      }
+
+      body {
+        cursor: auto;
+      }
+
+      button,
+      a,
+      .template-card,
+      .chip,
+      .filter-btn,
+      .btn-primary,
+      .btn-secondary,
+      .btn-ai,
+      .btn-outline-sm,
+      .mode-pill,
+      .provider-btn,
+      .api-save-btn,
+      .template-action,
+      .creativity-slider {
+        cursor: auto;
+      }
+    }
+
+    /* Tablet & small desktops */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      #templates-section {
+        padding: 20px 24px 60px;
+      }
+
+      #editor-section {
+        padding: 24px;
+      }
+
+      #final-preview {
+        width: 300px !important;
+        height: 250px !important;
+      }
+    }
+
+    /* Tablets */
+    @media (max-width: 900px) {
+      .api-key-wrapper {
+        display: none;
+      }
+
+      .templates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 18px;
+      }
+    }
+
+    /* Mobile & small tablets */
+    @media (max-width: 768px) {
+
+      /* Nav */
+      nav {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .logo {
+        font-size: 1.4rem;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-links a {
+        font-size: 0.75rem;
+      }
+
+      /* Hero */
+      #hero {
+        padding: 100px 16px 40px;
+        min-height: auto;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 12vw, 5rem);
+        margin-bottom: 14px;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+        padding: 0 8px;
+      }
+
+      .hero-badge {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+        margin-bottom: 20px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        padding: 14px 32px;
+        font-size: 0.9rem;
+      }
+
+      /* Section headers */
+      .section-header {
+        padding: 50px 16px 30px;
+      }
+
+      .section-title {
+        font-size: clamp(1.6rem, 6vw, 2.5rem);
+      }
+
+      /* Templates */
+      #templates-section {
+        padding: 16px 16px 50px;
+      }
+
+      .filter-bar {
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .filter-btn {
+        padding: 6px 16px;
+        font-size: 0.78rem;
+      }
+
+      .templates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .template-canvas {
+        height: 200px;
+        padding: 20px;
+      }
+
+      /* Editor */
+      #editor-section {
+        padding: 16px;
+        margin-bottom: 40px;
+      }
+
+      .editor-wrapper {
+        border-radius: 20px;
+      }
+
+      .editor-header {
+        padding: 16px 20px;
+        flex-wrap: wrap;
+      }
+
+      .editor-header-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+      }
+
+      .editor-header h3 {
+        font-size: 1rem;
+      }
+
+      .editor-body {
+        grid-template-columns: 1fr;
+      }
+
+      .editor-left {
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .editor-right {
+        padding: 20px;
+      }
+
+      .selected-preview {
+        height: 150px;
+      }
+
+      #final-preview {
+        width: 100% !important;
+        max-width: 340px;
+        height: 240px !important;
+      }
+
+      .preview-controls {
+        flex-wrap: wrap;
+      }
+
+      .mode-pills {
+        gap: 6px;
+      }
+
+      .mode-pill {
+        padding: 5px 12px;
+        font-size: 0.68rem;
+      }
+
+      .suggestion-chips {
+        gap: 6px;
+      }
+
+      .chip {
+        padding: 5px 12px;
+        font-size: 0.7rem;
+      }
+
+      .creativity-row {
+        padding: 10px 14px;
+      }
+
+      /* Modal */
+      .modal {
+        padding: 24px;
+        border-radius: 20px;
+      }
+
+      .modal h3 {
+        font-size: 1.5rem;
+      }
+
+      .modal p {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+      }
+
+      #modal-preview {
+        height: 170px;
+      }
+
+      .download-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .download-options .btn-primary,
+      .download-options .btn-secondary {
+        width: 100%;
+      }
+
+      /* Toast */
+      .toast {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        text-align: center;
+        font-size: 0.85rem;
+        border-radius: 10px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 24px 16px;
+        font-size: 0.78rem;
+      }
+    }
+
+    /* Small phones */
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 1.2rem;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-links a {
+        font-size: 0.7rem;
+        letter-spacing: 0;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 14vw, 3.5rem);
+      }
+
+      .hero-subtitle {
+        font-size: 0.85rem;
+      }
+
+      .hero-badge {
+        font-size: 0.65rem;
+        letter-spacing: 0.06em;
+      }
+
+      .templates-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .template-canvas {
+        height: 180px;
+      }
+
+      .section-title {
+        font-size: clamp(1.4rem, 7vw, 2rem);
+      }
+
+      .editor-header h3 {
+        font-size: 0.9rem;
+      }
+
+      .editor-header p {
+        font-size: 0.72rem;
+      }
+
+      .ai-prompt-box textarea {
+        font-size: 0.85rem;
+        min-height: 70px;
+      }
+
+      .btn-ai {
+        padding: 10px 18px;
+        font-size: 0.8rem;
+      }
+
+      .btn-outline-sm {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+      }
+
+      #final-preview {
+        height: 220px !important;
+      }
+
+      .modal {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .modal h3 {
+        font-size: 1.3rem;
+      }
+
+      #modal-preview {
+        height: 150px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-dot"></div>
+  <div id="cursor"></div>
+  <div id="cursor-dot"></div>
 
-<canvas id="bg-canvas"></canvas>
+  <canvas id="bg-canvas"></canvas>
 
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <div class="logo">HoliAI ✦</div>
-  <div class="nav-links">
-    <a href="#templates">Templates</a>
-    <a href="#editor">AI Editor</a>
-    <a href="#editor">Create</a>
-  </div>
-  <div class="api-key-wrapper">
-    <div class="api-provider-toggle">
-      <button class="provider-btn active" id="btn-gemini" onclick="setProvider('gemini')">Gemini</button>
-    <div class="api-key-field">
-      <input type="password" id="api-key-input" placeholder="🔑 Paste API key…" autocomplete="off" />
-      <button class="api-save-btn" onclick="saveApiKey()">Connect</button>
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="logo">HoliAI ✦</div>
+    <div class="nav-links">
+      <a href="#templates">Templates</a>
+      <a href="#editor">AI Editor</a>
+      <a href="#editor">Create</a>
     </div>
-    <div class="api-status" id="api-status">⬤ Not connected</div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="color-burst" style="width:600px;height:600px;background:radial-gradient(var(--pink),transparent);top:-200px;left:-200px;"></div>
-  <div class="color-burst" style="width:500px;height:500px;background:radial-gradient(var(--blue),transparent);bottom:-100px;right:-100px;"></div>
-  <div class="color-burst" style="width:400px;height:400px;background:radial-gradient(var(--orange),transparent);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-
-  <div class="hero-badge" id="hero-badge">
-    <span></span>
-    AI-Powered Holi Greetings
-  </div>
-
-  <h1 class="hero-title">
-    <span class="line1" id="hero-line1">Happy</span>
-    <span class="line2" id="hero-line2">Holi 2026</span>
-  </h1>
-
-  <p class="hero-subtitle" id="hero-sub">Create stunning, personalized Holi greetings with AI. Choose from beautiful templates and customize with natural language.</p>
-
-  <div class="hero-cta" id="hero-cta">
-    <button class="btn-primary" onclick="scrollToSection('templates')">Browse Templates ✦</button>
-    <button class="btn-secondary" onclick="scrollToSection('editor')">AI Editor →</button>
-  </div>
-
-  <!-- Animated color splashes -->
-  <div id="hero-splashes"></div>
-</section>
-
-<!-- TEMPLATES SECTION -->
-<section id="templates">
-  <div class="section-header">
-    <p class="section-label" id="tpl-label">✦ Choose Your Style</p>
-    <h2 class="section-title" id="tpl-title">Beautiful <span>Templates</span></h2>
-  </div>
-
-  <div id="templates-section">
-    <div class="filter-bar" id="filter-bar">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="vibrant">Vibrant</button>
-      <button class="filter-btn" data-filter="dark">Dark</button>
-      <button class="filter-btn" data-filter="minimal">Minimal</button>
-      <button class="filter-btn" data-filter="special">Special FX</button>
-    </div>
-
-    <div class="templates-grid" id="templates-grid"></div>
-  </div>
-</section>
-
-<!-- AI EDITOR SECTION -->
-<section id="editor">
-  <div class="section-header">
-    <p class="section-label">✦ AI-Powered</p>
-    <h2 class="section-title">Edit with <span>AI Prompts</span></h2>
-  </div>
-
-  <div id="editor-section">
-    <div class="editor-wrapper">
-      <div class="editor-header">
-        <div class="editor-header-icon">🤖</div>
-        <div>
-          <h3>AI Greeting Editor</h3>
-          <p>Select a template, then describe changes in natural language</p>
+    <div class="api-key-wrapper">
+      <div class="api-provider-toggle">
+        <button class="provider-btn active" id="btn-gemini" onclick="setProvider('gemini')">Gemini</button>
+        <div class="api-key-field">
+          <input type="password" id="api-key-input" placeholder="🔑 Paste API key…" autocomplete="off" />
+          <button class="api-save-btn" onclick="saveApiKey()">Connect</button>
         </div>
+        <div class="api-status" id="api-status">⬤ Not connected</div>
+      </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="color-burst"
+      style="width:600px;height:600px;background:radial-gradient(var(--pink),transparent);top:-200px;left:-200px;">
+    </div>
+    <div class="color-burst"
+      style="width:500px;height:500px;background:radial-gradient(var(--blue),transparent);bottom:-100px;right:-100px;">
+    </div>
+    <div class="color-burst"
+      style="width:400px;height:400px;background:radial-gradient(var(--orange),transparent);top:50%;left:50%;transform:translate(-50%,-50%);">
+    </div>
+
+    <div class="hero-badge" id="hero-badge">
+      <span></span>
+      AI-Powered Holi Greetings
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line1" id="hero-line1">Happy</span>
+      <span class="line2" id="hero-line2">Holi 2026</span>
+    </h1>
+
+    <p class="hero-subtitle" id="hero-sub">Create stunning, personalized Holi greetings with AI. Choose from beautiful
+      templates and customize with natural language.</p>
+
+    <div class="hero-cta" id="hero-cta">
+      <button class="btn-primary" onclick="scrollToSection('templates')">Browse Templates ✦</button>
+      <button class="btn-secondary" onclick="scrollToSection('editor')">AI Editor →</button>
+    </div>
+
+    <!-- Animated color splashes -->
+    <div id="hero-splashes"></div>
+  </section>
+
+  <!-- TEMPLATES SECTION -->
+  <section id="templates">
+    <div class="section-header">
+      <p class="section-label" id="tpl-label">✦ Choose Your Style</p>
+      <h2 class="section-title" id="tpl-title">Beautiful <span>Templates</span></h2>
+    </div>
+
+    <div id="templates-section">
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="vibrant">Vibrant</button>
+        <button class="filter-btn" data-filter="dark">Dark</button>
+        <button class="filter-btn" data-filter="minimal">Minimal</button>
+        <button class="filter-btn" data-filter="special">Special FX</button>
       </div>
 
-      <div class="editor-body">
-        <!-- LEFT: Controls -->
-        <div class="editor-left">
-          <p class="editor-label">Selected Template</p>
-          <div id="active-tpl-badge" class="active-tpl-badge" style="display:none">
-            <div class="dot"></div>
-            <span id="active-tpl-name">None selected</span>
-          </div>
-          <div class="selected-preview">
-            <div id="selected-template-display">
-              <p style="color:rgba(255,255,255,0.3);font-size:0.9rem;">← Select a template from above</p>
-            </div>
-          </div>
+      <div class="templates-grid" id="templates-grid"></div>
+    </div>
+  </section>
 
-          <p class="editor-label">AI Creativity</p>
-          <div class="creativity-row">
-            <span class="creativity-label">Creativity</span>
-            <input type="range" min="1" max="10" value="7" class="creativity-slider" id="creativity-slider" oninput="document.getElementById('creativity-val').textContent=this.value">
-            <span class="creativity-val" id="creativity-val">7</span>
-          </div>
+  <!-- AI EDITOR SECTION -->
+  <section id="editor">
+    <div class="section-header">
+      <p class="section-label">✦ AI-Powered</p>
+      <h2 class="section-title">Edit with <span>AI Prompts</span></h2>
+    </div>
 
-          <p class="editor-label" style="margin-bottom:8px">AI Mode</p>
-          <div class="mode-pills" id="mode-pills">
-            <button class="mode-pill active" data-mode="enhance" onclick="selectMode(this)">✦ Enhance</button>
-            <button class="mode-pill" data-mode="rewrite" onclick="selectMode(this)">↺ Rewrite</button>
-            <button class="mode-pill" data-mode="poetic" onclick="selectMode(this)">🪷 Poetic</button>
-            <button class="mode-pill" data-mode="funny" onclick="selectMode(this)">😄 Funny</button>
-            <button class="mode-pill" data-mode="formal" onclick="selectMode(this)">👔 Formal</button>
-            <button class="mode-pill" data-mode="kids" onclick="selectMode(this)">🎈 For Kids</button>
-          </div>
-
-          <p class="editor-label">AI Edit Prompt</p>
-          <div class="ai-prompt-box">
-            <textarea id="ai-prompt" placeholder="Describe your changes... e.g. 'Make it more vibrant with rainbow colors and add a warm Holi message for my friend Priya'"></textarea>
-          </div>
-
-          <div class="ai-thinking" id="ai-thinking">
-            <div class="dot-wave">
-              <span></span><span></span><span></span>
-            </div>
-            AI is creating your greeting…
-          </div>
-
-          <div class="prompt-actions">
-            <button class="btn-ai" id="generate-btn" onclick="generateWithAI()">
-              ✨ Generate with AI
-            </button>
-            <button class="btn-outline-sm" onclick="clearPrompt()">Clear</button>
-          </div>
-
-          <div class="suggestion-chips" id="suggestion-chips">
-            <span class="chip" onclick="useChip(this)">🌈 Add rainbow splash</span>
-            <span class="chip" onclick="useChip(this)">💫 Make it glittery</span>
-            <span class="chip" onclick="useChip(this)">🎨 Vibrant & festive</span>
-            <span class="chip" onclick="useChip(this)">✨ Dark cosmic theme</span>
-            <span class="chip" onclick="useChip(this)">🌸 Soft pastel mood</span>
-            <span class="chip" onclick="useChip(this)">🔥 Energetic & bold</span>
+    <div id="editor-section">
+      <div class="editor-wrapper">
+        <div class="editor-header">
+          <div class="editor-header-icon">🤖</div>
+          <div>
+            <h3>AI Greeting Editor</h3>
+            <p>Select a template, then describe changes in natural language</p>
           </div>
         </div>
 
-        <!-- RIGHT: Preview -->
-        <div class="editor-right">
-          <p class="editor-label">Live Preview</p>
-          <div class="preview-container">
-            <div id="final-preview" class="t-vibrant">
-              <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;text-shadow:2px 2px 10px rgba(0,0,0,0.5);">Happy Holi! 🎨</h2>
-              <p style="color:rgba(255,255,255,0.9);font-size:0.85rem;margin-top:8px;">Wishing you a colorful festival full of joy & love</p>
+        <div class="editor-body">
+          <!-- LEFT: Controls -->
+          <div class="editor-left">
+            <p class="editor-label">Selected Template</p>
+            <div id="active-tpl-badge" class="active-tpl-badge" style="display:none">
+              <div class="dot"></div>
+              <span id="active-tpl-name">None selected</span>
             </div>
-            <div class="preview-controls">
-              <button class="btn-outline-sm" onclick="downloadGreeting()">⬇ Download</button>
-              <button class="btn-outline-sm" onclick="shareGreeting()">↗ Share</button>
-              <button class="btn-ai" style="padding:10px 20px;flex:none" onclick="openModal()">Use This ✓</button>
+            <div class="selected-preview">
+              <div id="selected-template-display">
+                <p style="color:rgba(255,255,255,0.3);font-size:0.9rem;">← Select a template from above</p>
+              </div>
+            </div>
+
+            <p class="editor-label">AI Creativity</p>
+            <div class="creativity-row">
+              <span class="creativity-label">Creativity</span>
+              <input type="range" min="1" max="10" value="7" class="creativity-slider" id="creativity-slider"
+                oninput="document.getElementById('creativity-val').textContent=this.value">
+              <span class="creativity-val" id="creativity-val">7</span>
+            </div>
+
+            <p class="editor-label" style="margin-bottom:8px">AI Mode</p>
+            <div class="mode-pills" id="mode-pills">
+              <button class="mode-pill active" data-mode="enhance" onclick="selectMode(this)">✦ Enhance</button>
+              <button class="mode-pill" data-mode="rewrite" onclick="selectMode(this)">↺ Rewrite</button>
+              <button class="mode-pill" data-mode="poetic" onclick="selectMode(this)">🪷 Poetic</button>
+              <button class="mode-pill" data-mode="funny" onclick="selectMode(this)">😄 Funny</button>
+              <button class="mode-pill" data-mode="formal" onclick="selectMode(this)">👔 Formal</button>
+              <button class="mode-pill" data-mode="kids" onclick="selectMode(this)">🎈 For Kids</button>
+            </div>
+
+            <p class="editor-label">AI Edit Prompt</p>
+            <div class="ai-prompt-box">
+              <textarea id="ai-prompt"
+                placeholder="Describe your changes... e.g. 'Make it more vibrant with rainbow colors and add a warm Holi message for my friend Priya'"></textarea>
+            </div>
+
+            <div class="ai-thinking" id="ai-thinking">
+              <div class="dot-wave">
+                <span></span><span></span><span></span>
+              </div>
+              AI is creating your greeting…
+            </div>
+
+            <div class="prompt-actions">
+              <button class="btn-ai" id="generate-btn" onclick="generateWithAI()">
+                ✨ Generate with AI
+              </button>
+              <button class="btn-outline-sm" onclick="clearPrompt()">Clear</button>
+            </div>
+
+            <div class="suggestion-chips" id="suggestion-chips">
+              <span class="chip" onclick="useChip(this)">🌈 Add rainbow splash</span>
+              <span class="chip" onclick="useChip(this)">💫 Make it glittery</span>
+              <span class="chip" onclick="useChip(this)">🎨 Vibrant & festive</span>
+              <span class="chip" onclick="useChip(this)">✨ Dark cosmic theme</span>
+              <span class="chip" onclick="useChip(this)">🌸 Soft pastel mood</span>
+              <span class="chip" onclick="useChip(this)">🔥 Energetic & bold</span>
+            </div>
+          </div>
+
+          <!-- RIGHT: Preview -->
+          <div class="editor-right">
+            <p class="editor-label">Live Preview</p>
+            <div class="preview-container">
+              <div id="final-preview" class="t-vibrant">
+                <h2
+                  style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;text-shadow:2px 2px 10px rgba(0,0,0,0.5);">
+                  Happy Holi! 🎨</h2>
+                <p style="color:rgba(255,255,255,0.9);font-size:0.85rem;margin-top:8px;">Wishing you a colorful festival
+                  full of joy & love</p>
+              </div>
+              <div class="preview-controls">
+                <button class="btn-outline-sm" onclick="downloadGreeting()">⬇ Download</button>
+                <button class="btn-outline-sm" onclick="shareGreeting()">↗ Share</button>
+                <button class="btn-ai" style="padding:10px 20px;flex:none" onclick="openModal()">Use This ✓</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- MODAL -->
-<div class="modal-backdrop" id="modal">
-  <div class="modal">
-    <h3>🎨 Your Greeting is Ready!</h3>
-    <p>Your beautiful Holi greeting has been created. Download it or share it with your loved ones!</p>
-    <div id="modal-preview"></div>
-    <div class="download-options">
-      <button class="btn-primary" onclick="downloadGreeting(); closeModal()">⬇ Download PNG</button>
-      <button class="btn-secondary" onclick="closeModal()">Close</button>
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <h3>🎨 Your Greeting is Ready!</h3>
+      <p>Your beautiful Holi greeting has been created. Download it or share it with your loved ones!</p>
+      <div id="modal-preview"></div>
+      <div class="download-options">
+        <button class="btn-primary" onclick="downloadGreeting(); closeModal()">⬇ Download PNG</button>
+        <button class="btn-secondary" onclick="closeModal()">Close</button>
+      </div>
     </div>
   </div>
-</div>
 
-<footer>
-  <p>Made with <span>♥</span> for the Festival of Colors &nbsp;·&nbsp; HoliAI 2026 &nbsp;·&nbsp; Powered by XploreAIQ</p>
-</footer>
+  <footer>
+    <p>Made with <span>♥</span> for the Festival of Colors &nbsp;·&nbsp; HoliAI 2026 &nbsp;·&nbsp; Powered by XploreAIQ
+    </p>
+  </footer>
 
-<script>
-// ===============================
-// CURSOR
-// ===============================
-const cursor = document.getElementById('cursor');
-const cursorDot = document.getElementById('cursor-dot');
-let mouseX = 0, mouseY = 0;
-let cursorX = 0, cursorY = 0;
+  <script>
+    // ===============================
+    // CURSOR
+    // ===============================
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursor-dot');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  gsap.to(cursorDot, { x: mouseX - 3, y: mouseY - 3, duration: 0.1 });
-});
-
-gsap.ticker.add(() => {
-  cursorX += (mouseX - cursorX) * 0.15;
-  cursorY += (mouseY - cursorY) * 0.15;
-  gsap.set(cursor, { x: cursorX - 10, y: cursorY - 10 });
-});
-
-document.querySelectorAll('button, a, .template-card, .chip, .filter-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 1.8, duration: 0.3 }));
-  el.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, duration: 0.3 }));
-});
-
-// ===============================
-// BG CANVAS - FLOATING ORBS
-// ===============================
-const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const orbs = Array.from({length: 8}, (_, i) => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: 150 + Math.random() * 200,
-  vx: (Math.random() - 0.5) * 0.5,
-  vy: (Math.random() - 0.5) * 0.5,
-  color: ['#FF3CAC','#784BA0','#2B86C5','#FF6B35','#FFD700','#00C851','#FF3CAC','#FF6B35'][i],
-  alpha: 0.06 + Math.random() * 0.08
-}));
-
-function drawOrbs() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  orbs.forEach(o => {
-    o.x += o.vx; o.y += o.vy;
-    if (o.x < -o.r) o.x = canvas.width + o.r;
-    if (o.x > canvas.width + o.r) o.x = -o.r;
-    if (o.y < -o.r) o.y = canvas.height + o.r;
-    if (o.y > canvas.height + o.r) o.y = -o.r;
-    const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-    g.addColorStop(0, o.color + 'CC');
-    g.addColorStop(1, o.color + '00');
-    ctx.fillStyle = g;
-    ctx.globalAlpha = o.alpha;
-    ctx.beginPath();
-    ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-    ctx.fill();
-  });
-  ctx.globalAlpha = 1;
-  requestAnimationFrame(drawOrbs);
-}
-drawOrbs();
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-// ===============================
-// HERO SPLASHES
-// ===============================
-function createHeroSplashes() {
-  const container = document.getElementById('hero-splashes');
-  const colors = ['#FF3CAC','#FFD700','#00C851','#2B86C5','#FF6B35','#784BA0'];
-  for (let i = 0; i < 15; i++) {
-    const s = document.createElement('div');
-    s.className = 'splash';
-    const size = 20 + Math.random() * 60;
-    s.style.cssText = `
-      width:${size}px;height:${size}px;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      left:${Math.random()*100}%;
-      top:${Math.random()*100}%;
-      opacity:${0.1+Math.random()*0.3};
-      filter:blur(${Math.random()*4}px);
-    `;
-    container.appendChild(s);
-    gsap.to(s, {
-      y: (Math.random()-0.5)*100,
-      x: (Math.random()-0.5)*60,
-      scale: 0.5 + Math.random(),
-      duration: 3 + Math.random()*4,
-      repeat: -1, yoyo: true,
-      ease: 'sine.inOut',
-      delay: Math.random()*2
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      gsap.to(cursorDot, { x: mouseX - 3, y: mouseY - 3, duration: 0.1 });
     });
-  }
-}
-createHeroSplashes();
 
-// ===============================
-// GSAP ANIMATIONS
-// ===============================
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
+    gsap.ticker.add(() => {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      gsap.set(cursor, { x: cursorX - 10, y: cursorY - 10 });
+    });
 
-// Hero entrance
-const tl = gsap.timeline({ delay: 0.3 });
-tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.6, ease: 'back.out(2)' })
-  .from('#hero-line1', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
-  .from('#hero-line2', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
-  .from('#hero-sub', { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-  .from('#hero-cta', { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+    document.querySelectorAll('button, a, .template-card, .chip, .filter-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 1.8, duration: 0.3 }));
+      el.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, duration: 0.3 }));
+    });
 
-// Floating navbar logo
-gsap.to('.logo', { y: -3, duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    // ===============================
+    // BG CANVAS - FLOATING ORBS
+    // ===============================
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-// Section headers scroll animation
-gsap.from('#tpl-label, #tpl-title', {
-  scrollTrigger: { trigger: '#templates', start: 'top 75%' },
-  y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out'
-});
+    const orbs = Array.from({ length: 8 }, (_, i) => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 150 + Math.random() * 200,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      color: ['#FF3CAC', '#784BA0', '#2B86C5', '#FF6B35', '#FFD700', '#00C851', '#FF3CAC', '#FF6B35'][i],
+      alpha: 0.06 + Math.random() * 0.08
+    }));
 
-// ===============================
-// TEMPLATES DATA
-// ===============================
-const templates = [
-  {
-    id: 'vibrant', name: 'Vibrant Holi', style: 'Vibrant · Colorful', category: 'vibrant',
-    bgClass: 't-vibrant',
-    title: '🎨 Happy Holi!',
-    message: 'May your life be filled with the colors of joy!',
-    html: (t,m) => `<div style="background:linear-gradient(135deg,#FF6B35,#FFD700,#FF3CAC);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
-      ${createSplashBg(['#fff','#FF3CAC','#FFD700','#2B86C5'])}
+    function drawOrbs() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      orbs.forEach(o => {
+        o.x += o.vx; o.y += o.vy;
+        if (o.x < -o.r) o.x = canvas.width + o.r;
+        if (o.x > canvas.width + o.r) o.x = -o.r;
+        if (o.y < -o.r) o.y = canvas.height + o.r;
+        if (o.y > canvas.height + o.r) o.y = -o.r;
+        const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+        g.addColorStop(0, o.color + 'CC');
+        g.addColorStop(1, o.color + '00');
+        ctx.fillStyle = g;
+        ctx.globalAlpha = o.alpha;
+        ctx.beginPath();
+        ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(drawOrbs);
+    }
+    drawOrbs();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // ===============================
+    // HERO SPLASHES
+    // ===============================
+    function createHeroSplashes() {
+      const container = document.getElementById('hero-splashes');
+      const colors = ['#FF3CAC', '#FFD700', '#00C851', '#2B86C5', '#FF6B35', '#784BA0'];
+      for (let i = 0; i < 15; i++) {
+        const s = document.createElement('div');
+        s.className = 'splash';
+        const size = 20 + Math.random() * 60;
+        s.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random() * colors.length)]};
+      left:${Math.random() * 100}%;
+      top:${Math.random() * 100}%;
+      opacity:${0.1 + Math.random() * 0.3};
+      filter:blur(${Math.random() * 4}px);
+    `;
+        container.appendChild(s);
+        gsap.to(s, {
+          y: (Math.random() - 0.5) * 100,
+          x: (Math.random() - 0.5) * 60,
+          scale: 0.5 + Math.random(),
+          duration: 3 + Math.random() * 4,
+          repeat: -1, yoyo: true,
+          ease: 'sine.inOut',
+          delay: Math.random() * 2
+        });
+      }
+    }
+    createHeroSplashes();
+
+    // ===============================
+    // GSAP ANIMATIONS
+    // ===============================
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+    // Hero entrance
+    const tl = gsap.timeline({ delay: 0.3 });
+    tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.6, ease: 'back.out(2)' })
+      .from('#hero-line1', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
+      .from('#hero-line2', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+      .from('#hero-sub', { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+      .from('#hero-cta', { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+
+    // Floating navbar logo
+    gsap.to('.logo', { y: -3, duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+    // Section headers scroll animation
+    gsap.from('#tpl-label, #tpl-title', {
+      scrollTrigger: { trigger: '#templates', start: 'top 75%' },
+      y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out'
+    });
+
+    // ===============================
+    // TEMPLATES DATA
+    // ===============================
+    const templates = [
+      {
+        id: 'vibrant', name: 'Vibrant Holi', style: 'Vibrant · Colorful', category: 'vibrant',
+        bgClass: 't-vibrant',
+        title: '🎨 Happy Holi!',
+        message: 'May your life be filled with the colors of joy!',
+        html: (t, m) => `<div style="background:linear-gradient(135deg,#FF6B35,#FFD700,#FF3CAC);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
+      ${createSplashBg(['#fff', '#FF3CAC', '#FFD700', '#2B86C5'])}
       <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;text-shadow:2px 2px 10px rgba(0,0,0,0.4);position:relative">${t}</h2>
       <p style="color:rgba(255,255,255,0.95);font-size:0.85rem;margin-top:10px;position:relative">${m}</p>
     </div>`
-  },
-  {
-    id: 'dark-elegance', name: 'Dark Elegance', style: 'Dark · Luxurious', category: 'dark',
-    bgClass: 't-dark',
-    title: '✨ Happy Holi',
-    message: 'Wishing you a colorful and blessed festival',
-    html: (t,m) => `<div style="background:#1a0030;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;border:2px solid rgba(255,60,172,0.3)">
-      ${createSplashBg(['#FF3CAC','#784BA0','#FFD700'])}
+      },
+      {
+        id: 'dark-elegance', name: 'Dark Elegance', style: 'Dark · Luxurious', category: 'dark',
+        bgClass: 't-dark',
+        title: '✨ Happy Holi',
+        message: 'Wishing you a colorful and blessed festival',
+        html: (t, m) => `<div style="background:#1a0030;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;border:2px solid rgba(255,60,172,0.3)">
+      ${createSplashBg(['#FF3CAC', '#784BA0', '#FFD700'])}
       <h2 style="font-family:'Playfair Display',serif;font-size:1.7rem;background:linear-gradient(135deg,#FF3CAC,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative">${t}</h2>
       <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-top:10px;position:relative">${m}</p>
     </div>`
-  },
-  {
-    id: 'pastel-dream', name: 'Pastel Dream', style: 'Soft · Pastel', category: 'minimal',
-    bgClass: 't-pastel',
-    title: '🌸 Happy Holi',
-    message: 'Celebrating the festival of colors with you',
-    html: (t,m) => `<div style="background:linear-gradient(135deg,#FFB3C6,#FFDAB9,#B8F0D3);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
+      },
+      {
+        id: 'pastel-dream', name: 'Pastel Dream', style: 'Soft · Pastel', category: 'minimal',
+        bgClass: 't-pastel',
+        title: '🌸 Happy Holi',
+        message: 'Celebrating the festival of colors with you',
+        html: (t, m) => `<div style="background:linear-gradient(135deg,#FFB3C6,#FFDAB9,#B8F0D3);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
       <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#5c2a7a">${t}</h2>
       <p style="color:#7a4a8a;font-size:0.85rem;margin-top:10px">${m}</p>
     </div>`
-  },
-  {
-    id: 'cosmic-holi', name: 'Cosmic Holi', style: 'Cosmic · Mystical', category: 'special',
-    bgClass: 't-cosmic',
-    title: '🌌 Happy Holi',
-    message: 'Let the universe shower you with colors',
-    html: (t,m) => `<div style="background:radial-gradient(ellipse at center,#0d0d2b 0%,#1a0040 100%);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;position:relative;overflow:hidden">
+      },
+      {
+        id: 'cosmic-holi', name: 'Cosmic Holi', style: 'Cosmic · Mystical', category: 'special',
+        bgClass: 't-cosmic',
+        title: '🌌 Happy Holi',
+        message: 'Let the universe shower you with colors',
+        html: (t, m) => `<div style="background:radial-gradient(ellipse at center,#0d0d2b 0%,#1a0040 100%);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;position:relative;overflow:hidden">
       ${createStarField()}
       <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;position:relative;text-shadow:0 0 20px rgba(255,215,0,0.5)">${t}</h2>
       <p style="color:rgba(255,215,0,0.8);font-size:0.85rem;margin-top:10px;position:relative">${m}</p>
     </div>`
-  },
-  {
-    id: 'watercolor', name: 'Watercolor Splash', style: 'Artistic · Watercolor', category: 'vibrant',
-    bgClass: 't-watercolor',
-    title: '🎨 Happy Holi!',
-    message: 'Colors of love, joy and togetherness',
-    html: (t,m) => `<div style="background:linear-gradient(135deg,rgba(255,107,53,0.9),rgba(120,75,160,0.8),rgba(43,134,197,0.8));width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;position:relative;overflow:hidden">
+      },
+      {
+        id: 'watercolor', name: 'Watercolor Splash', style: 'Artistic · Watercolor', category: 'vibrant',
+        bgClass: 't-watercolor',
+        title: '🎨 Happy Holi!',
+        message: 'Colors of love, joy and togetherness',
+        html: (t, m) => `<div style="background:linear-gradient(135deg,rgba(255,107,53,0.9),rgba(120,75,160,0.8),rgba(43,134,197,0.8));width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;position:relative;overflow:hidden">
       ${createWatercolorBlobs()}
       <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;font-style:italic;text-shadow:3px 3px 15px rgba(0,0,0,0.3);position:relative">${t}</h2>
       <p style="color:rgba(255,255,255,0.95);font-size:0.85rem;margin-top:10px;position:relative">${m}</p>
     </div>`
-  },
-  {
-    id: 'minimal-clean', name: 'Clean Minimal', style: 'Minimal · Modern', category: 'minimal',
-    bgClass: 't-minimal',
-    title: '🎉 Happy Holi',
-    message: 'Spreading joy one color at a time',
-    html: (t,m) => `<div style="background:#fff;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
+      },
+      {
+        id: 'minimal-clean', name: 'Clean Minimal', style: 'Minimal · Modern', category: 'minimal',
+        bgClass: 't-minimal',
+        title: '🎉 Happy Holi',
+        message: 'Spreading joy one color at a time',
+        html: (t, m) => `<div style="background:#fff;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center">
       <div style="width:60px;height:4px;background:linear-gradient(90deg,#FF3CAC,#FFD700,#00C851);border-radius:2px;margin-bottom:20px"></div>
       <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:#1a0030">${t}</h2>
       <p style="color:#666;font-size:0.85rem;margin-top:10px">${m}</p>
       <div style="width:60px;height:4px;background:linear-gradient(90deg,#00C851,#FFD700,#FF3CAC);border-radius:2px;margin-top:20px"></div>
     </div>`
-  },
-  {
-    id: 'retro-holi', name: 'Retro Festival', style: 'Retro · Vintage', category: 'dark',
-    bgClass: 't-retro',
-    title: '★ HAPPY HOLI ★',
-    message: 'A vintage celebration of colors',
-    html: (t,m) => `<div style="background:#2d1b00;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;border:3px solid #FF6B35">
+      },
+      {
+        id: 'retro-holi', name: 'Retro Festival', style: 'Retro · Vintage', category: 'dark',
+        bgClass: 't-retro',
+        title: '★ HAPPY HOLI ★',
+        message: 'A vintage celebration of colors',
+        html: (t, m) => `<div style="background:#2d1b00;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;border:3px solid #FF6B35">
       <div style="border:1px solid rgba(255,107,53,0.4);padding:20px;width:100%;border-radius:8px">
         <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#FFD700;letter-spacing:2px">${t}</h2>
         <div style="height:2px;background:linear-gradient(90deg,transparent,#FF6B35,transparent);margin:12px 0"></div>
         <p style="color:#FF6B35;font-size:0.85rem;font-weight:600">${m}</p>
       </div>
     </div>`
-  },
-  {
-    id: 'neon-glow', name: 'Neon Glow', style: 'Neon · Electric', category: 'special',
-    bgClass: 't-neon',
-    title: '⚡ HAPPY HOLI',
-    message: 'Light up the festival with electric colors',
-    html: (t,m) => `<div style="background:#000;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;box-shadow:inset 0 0 40px rgba(0,200,81,0.1)">
+      },
+      {
+        id: 'neon-glow', name: 'Neon Glow', style: 'Neon · Electric', category: 'special',
+        bgClass: 't-neon',
+        title: '⚡ HAPPY HOLI',
+        message: 'Light up the festival with electric colors',
+        html: (t, m) => `<div style="background:#000;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;box-shadow:inset 0 0 40px rgba(0,200,81,0.1)">
       <h2 style="font-family:'Poppins',sans-serif;font-size:1.6rem;color:#00C851;text-shadow:0 0 20px #00C851,0 0 40px #00C851;font-weight:800">${t}</h2>
       <p style="color:#FF3CAC;font-size:0.85rem;margin-top:10px;text-shadow:0 0 10px #FF3CAC">${m}</p>
     </div>`
-  }
-];
+      }
+    ];
 
-let selectedTemplate = templates[0];
+    let selectedTemplate = templates[0];
 
-function createSplashBg(colors) {
-  return colors.map((c,i) => `<div style="position:absolute;width:${40+i*20}px;height:${40+i*20}px;background:${c};border-radius:50%;opacity:0.2;top:${10+i*15}%;left:${5+i*20}%;filter:blur(8px)"></div>`).join('');
-}
+    function createSplashBg(colors) {
+      return colors.map((c, i) => `<div style="position:absolute;width:${40 + i * 20}px;height:${40 + i * 20}px;background:${c};border-radius:50%;opacity:0.2;top:${10 + i * 15}%;left:${5 + i * 20}%;filter:blur(8px)"></div>`).join('');
+    }
 
-function createStarField() {
-  return Array.from({length:20}, () => `<div style="position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${0.3+Math.random()*0.7}"></div>`).join('');
-}
+    function createStarField() {
+      return Array.from({ length: 20 }, () => `<div style="position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;top:${Math.random() * 100}%;left:${Math.random() * 100}%;opacity:${0.3 + Math.random() * 0.7}"></div>`).join('');
+    }
 
-function createWatercolorBlobs() {
-  const colors = ['rgba(255,215,0,0.3)','rgba(0,200,81,0.3)','rgba(255,60,172,0.3)'];
-  return colors.map((c,i) => `<div style="position:absolute;width:120px;height:80px;background:${c};border-radius:60% 40% 70% 30%;top:${i*30}%;left:${i*25}%;filter:blur(15px)"></div>`).join('');
-}
+    function createWatercolorBlobs() {
+      const colors = ['rgba(255,215,0,0.3)', 'rgba(0,200,81,0.3)', 'rgba(255,60,172,0.3)'];
+      return colors.map((c, i) => `<div style="position:absolute;width:120px;height:80px;background:${c};border-radius:60% 40% 70% 30%;top:${i * 30}%;left:${i * 25}%;filter:blur(15px)"></div>`).join('');
+    }
 
-// ===============================
-// RENDER TEMPLATES
-// ===============================
-function renderTemplates(filter = 'all') {
-  const grid = document.getElementById('templates-grid');
-  grid.innerHTML = '';
-  const filtered = filter === 'all' ? templates : templates.filter(t => t.category === filter);
-  
-  filtered.forEach((t, i) => {
-    const card = document.createElement('div');
-    card.className = 'template-card';
-    card.dataset.tplId = t.id;  // ← FIX: needed for .selected highlight
-    card.innerHTML = `
+    // ===============================
+    // RENDER TEMPLATES
+    // ===============================
+    function renderTemplates(filter = 'all') {
+      const grid = document.getElementById('templates-grid');
+      grid.innerHTML = '';
+      const filtered = filter === 'all' ? templates : templates.filter(t => t.category === filter);
+
+      filtered.forEach((t, i) => {
+        const card = document.createElement('div');
+        card.className = 'template-card';
+        card.dataset.tplId = t.id;  // ← FIX: needed for .selected highlight
+        card.innerHTML = `
       <div class="template-canvas ${t.bgClass}" id="tcard-${t.id}">
         <div class="template-overlay">
           <button class="template-action use-btn" onclick="selectTemplate('${t.id}')">Use Template</button>
@@ -1076,218 +2026,218 @@ function renderTemplates(filter = 'all') {
       </div>
     `;
 
-    const canvasDiv = card.querySelector(`#tcard-${t.id}`);
-    const inner = document.createElement('div');
-    inner.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;';
-    inner.innerHTML = `<h2 style="${getH2Style(t.bgClass)}">${t.title}</h2><p style="${getPStyle(t.bgClass)}">${t.message}</p>`;
-    
-    // insert before overlay
-    const overlay = canvasDiv.querySelector('.template-overlay');
-    canvasDiv.insertBefore(inner, overlay);
+        const canvasDiv = card.querySelector(`#tcard-${t.id}`);
+        const inner = document.createElement('div');
+        inner.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;';
+        inner.innerHTML = `<h2 style="${getH2Style(t.bgClass)}">${t.title}</h2><p style="${getPStyle(t.bgClass)}">${t.message}</p>`;
 
-    grid.appendChild(card);
-    
-    // Stagger animate cards
-    gsap.from(card, {
-      y: 50, opacity: 0, duration: 0.5,
-      delay: i * 0.08, ease: 'power3.out',
-      scrollTrigger: { trigger: '#templates-section', start: 'top 80%' }
+        // insert before overlay
+        const overlay = canvasDiv.querySelector('.template-overlay');
+        canvasDiv.insertBefore(inner, overlay);
+
+        grid.appendChild(card);
+
+        // Stagger animate cards
+        gsap.from(card, {
+          y: 50, opacity: 0, duration: 0.5,
+          delay: i * 0.08, ease: 'power3.out',
+          scrollTrigger: { trigger: '#templates-section', start: 'top 80%' }
+        });
+      });
+    }
+
+    function getH2Style(cls) {
+      const styles = {
+        't-vibrant': "font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;text-shadow:2px 2px 8px rgba(0,0,0,0.4)",
+        't-dark': "font-family:'Playfair Display',serif;font-size:1.5rem;background:linear-gradient(135deg,#FF3CAC,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text",
+        't-pastel': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#5c2a7a",
+        't-cosmic': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;text-shadow:0 0 15px rgba(255,215,0,0.5)",
+        't-watercolor': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;font-style:italic;text-shadow:2px 2px 10px rgba(0,0,0,0.3)",
+        't-minimal': "font-family:'Playfair Display',serif;font-size:1.7rem;color:#1a0030",
+        't-retro': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#FFD700;letter-spacing:2px",
+        't-neon': "font-family:'Poppins',sans-serif;font-size:1.4rem;color:#00C851;text-shadow:0 0 15px #00C851;font-weight:800",
+      };
+      return styles[cls] || "font-size:1.5rem;color:#fff";
+    }
+
+    function getPStyle(cls) {
+      const styles = {
+        't-vibrant': "color:rgba(255,255,255,0.9);font-size:0.8rem;margin-top:8px",
+        't-dark': "color:rgba(255,255,255,0.7);font-size:0.8rem;margin-top:8px",
+        't-pastel': "color:#7a4a8a;font-size:0.8rem;margin-top:8px",
+        't-cosmic': "color:rgba(255,215,0,0.8);font-size:0.8rem;margin-top:8px",
+        't-watercolor': "color:rgba(255,255,255,0.95);font-size:0.8rem;margin-top:8px",
+        't-minimal': "color:#666;font-size:0.8rem;margin-top:8px",
+        't-retro': "color:#FF6B35;font-size:0.8rem;margin-top:8px;font-weight:600",
+        't-neon': "color:#FF3CAC;font-size:0.8rem;margin-top:8px;text-shadow:0 0 8px #FF3CAC",
+      };
+      return styles[cls] || "font-size:0.8rem;margin-top:8px;color:rgba(255,255,255,0.7)";
+    }
+
+    renderTemplates();
+
+    // Re-apply .selected class after re-render (e.g. filter change)
+    function reapplySelectedState() {
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      if (selectedTemplate) {
+        const card = document.querySelector(`[data-tpl-id="${selectedTemplate.id}"]`);
+        if (card) card.classList.add('selected');
+      }
+    }
+
+    // ===============================
+    // FILTER BUTTONS
+    // ===============================
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderTemplates(this.dataset.filter);
+        reapplySelectedState();  // ← FIX: keep selection visible after filter
+      });
     });
-  });
-}
 
-function getH2Style(cls) {
-  const styles = {
-    't-vibrant': "font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;text-shadow:2px 2px 8px rgba(0,0,0,0.4)",
-    't-dark': "font-family:'Playfair Display',serif;font-size:1.5rem;background:linear-gradient(135deg,#FF3CAC,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text",
-    't-pastel': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#5c2a7a",
-    't-cosmic': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;text-shadow:0 0 15px rgba(255,215,0,0.5)",
-    't-watercolor': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;font-style:italic;text-shadow:2px 2px 10px rgba(0,0,0,0.3)",
-    't-minimal': "font-family:'Playfair Display',serif;font-size:1.7rem;color:#1a0030",
-    't-retro': "font-family:'Playfair Display',serif;font-size:1.5rem;color:#FFD700;letter-spacing:2px",
-    't-neon': "font-family:'Poppins',sans-serif;font-size:1.4rem;color:#00C851;text-shadow:0 0 15px #00C851;font-weight:800",
-  };
-  return styles[cls] || "font-size:1.5rem;color:#fff";
-}
+    // ===============================
+    // API KEY MANAGEMENT
+    // ===============================
+    let currentProvider = 'gemini';
+    let savedApiKey = '';
 
-function getPStyle(cls) {
-  const styles = {
-    't-vibrant': "color:rgba(255,255,255,0.9);font-size:0.8rem;margin-top:8px",
-    't-dark': "color:rgba(255,255,255,0.7);font-size:0.8rem;margin-top:8px",
-    't-pastel': "color:#7a4a8a;font-size:0.8rem;margin-top:8px",
-    't-cosmic': "color:rgba(255,215,0,0.8);font-size:0.8rem;margin-top:8px",
-    't-watercolor': "color:rgba(255,255,255,0.95);font-size:0.8rem;margin-top:8px",
-    't-minimal': "color:#666;font-size:0.8rem;margin-top:8px",
-    't-retro': "color:#FF6B35;font-size:0.8rem;margin-top:8px;font-weight:600",
-    't-neon': "color:#FF3CAC;font-size:0.8rem;margin-top:8px;text-shadow:0 0 8px #FF3CAC",
-  };
-  return styles[cls] || "font-size:0.8rem;margin-top:8px;color:rgba(255,255,255,0.7)";
-}
+    function setProvider(p) {
+      currentProvider = p;
+      document.getElementById('btn-gemini').classList.toggle('active', p === 'gemini');
+      document.getElementById('btn-claude').classList.toggle('active', p === 'claude');
+      if (p === 'claude') {
+        document.getElementById('api-key-input').placeholder = '✓ Claude works without a key!';
+        document.getElementById('api-key-input').disabled = true;
+        document.getElementById('api-key-input').value = '';
+        document.querySelector('.api-save-btn').textContent = 'Ready ✓';
+        savedApiKey = 'proxy';
+        setApiStatus('connected', '⬤ Claude ready (built-in)');
+      } else {
+        document.getElementById('api-key-input').placeholder = '🔑 Gemini API key (AIza…)';
+        document.getElementById('api-key-input').disabled = false;
+        document.getElementById('api-key-input').value = '';
+        document.querySelector('.api-save-btn').textContent = 'Connect';
+        savedApiKey = '';
+        setApiStatus('disconnected', '⬤ Not connected');
+      }
+    }
 
-renderTemplates();
+    function saveApiKey() {
+      const val = document.getElementById('api-key-input').value.trim();
+      if (!val) { showToast('Please paste your API key first!'); return; }
+      savedApiKey = val;
+      setApiStatus('connected', `⬤ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} connected ✓`);
+      showToast(`✅ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} API key saved!`);
+    }
 
-// Re-apply .selected class after re-render (e.g. filter change)
-function reapplySelectedState() {
-  document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-  if (selectedTemplate) {
-    const card = document.querySelector(`[data-tpl-id="${selectedTemplate.id}"]`);
-    if (card) card.classList.add('selected');
-  }
-}
+    function setApiStatus(state, msg) {
+      const el = document.getElementById('api-status');
+      el.textContent = msg;
+      el.className = 'api-status ' + (state === 'connected' ? 'connected' : state === 'error' ? 'error' : '');
+    }
 
-// ===============================
-// FILTER BUTTONS
-// ===============================
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    renderTemplates(this.dataset.filter);
-    reapplySelectedState();  // ← FIX: keep selection visible after filter
-  });
-});
+    // ===============================
+    // MODE SELECTION
+    // ===============================
+    let currentMode = 'enhance';
+    function selectMode(el) {
+      document.querySelectorAll('.mode-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      currentMode = el.dataset.mode;
+    }
 
-// ===============================
-// API KEY MANAGEMENT
-// ===============================
-let currentProvider = 'gemini';
-let savedApiKey = '';
+    // ===============================
+    // TEMPLATE SELECTION — FIXED to persist
+    // ===============================
+    function selectTemplate(id) {
+      selectedTemplate = templates.find(t => t.id === id);
+      // Mark card as selected visually
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      const card = document.querySelector(`[data-tpl-id="${id}"]`);
+      if (card) card.classList.add('selected');
+      // Show badge
+      document.getElementById('active-tpl-badge').style.display = 'inline-flex';
+      document.getElementById('active-tpl-name').textContent = selectedTemplate.name;
+      updateSelectedPreview();
+      updateFinalPreview(selectedTemplate.title, selectedTemplate.message);
+      scrollToSection('editor');
+      spawnColorParticles();
+      showToast(`"${selectedTemplate.name}" selected!`);
+    }
 
-function setProvider(p) {
-  currentProvider = p;
-  document.getElementById('btn-gemini').classList.toggle('active', p === 'gemini');
-  document.getElementById('btn-claude').classList.toggle('active', p === 'claude');
-  if (p === 'claude') {
-    document.getElementById('api-key-input').placeholder = '✓ Claude works without a key!';
-    document.getElementById('api-key-input').disabled = true;
-    document.getElementById('api-key-input').value = '';
-    document.querySelector('.api-save-btn').textContent = 'Ready ✓';
-    savedApiKey = 'proxy';
-    setApiStatus('connected', '⬤ Claude ready (built-in)');
-  } else {
-    document.getElementById('api-key-input').placeholder = '🔑 Gemini API key (AIza…)';
-    document.getElementById('api-key-input').disabled = false;
-    document.getElementById('api-key-input').value = '';
-    document.querySelector('.api-save-btn').textContent = 'Connect';
-    savedApiKey = '';
-    setApiStatus('disconnected', '⬤ Not connected');
-  }
-}
+    function selectAndEdit(id) {
+      selectTemplate(id);
+      document.getElementById('ai-prompt').focus();
+    }
 
-function saveApiKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (!val) { showToast('Please paste your API key first!'); return; }
-  savedApiKey = val;
-  setApiStatus('connected', `⬤ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} connected ✓`);
-  showToast(`✅ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} API key saved!`);
-}
+    function updateSelectedPreview() {
+      const el = document.getElementById('selected-template-display');
+      el.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass)}">${selectedTemplate.title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${selectedTemplate.message}</p>`;
+      el.className = '';
+      el.style.cssText = `width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;`;
+      document.getElementById('selected-template-display').parentElement.style.background = getTemplateBg(selectedTemplate.bgClass);
+    }
 
-function setApiStatus(state, msg) {
-  const el = document.getElementById('api-status');
-  el.textContent = msg;
-  el.className = 'api-status ' + (state === 'connected' ? 'connected' : state === 'error' ? 'error' : '');
-}
+    function getTemplateBg(cls) {
+      const bgs = {
+        't-vibrant': 'linear-gradient(135deg,#FF6B35,#FFD700,#FF3CAC)',
+        't-dark': '#1a0030',
+        't-pastel': 'linear-gradient(135deg,#FFB3C6,#FFDAB9,#B8F0D3)',
+        't-cosmic': 'radial-gradient(ellipse,#0d0d2b,#1a0040)',
+        't-watercolor': 'linear-gradient(135deg,rgba(255,107,53,0.8),rgba(120,75,160,0.8),rgba(43,134,197,0.8))',
+        't-minimal': '#fff',
+        't-retro': '#2d1b00',
+        't-neon': '#000',
+      };
+      return bgs[cls] || '#1a0030';
+    }
 
-// ===============================
-// MODE SELECTION
-// ===============================
-let currentMode = 'enhance';
-function selectMode(el) {
-  document.querySelectorAll('.mode-pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  currentMode = el.dataset.mode;
-}
+    function updateFinalPreview(title, message) {
+      const fp = document.getElementById('final-preview');
+      // ALWAYS use selectedTemplate's bg — this fixes the "reset to default" bug
+      fp.style.background = getTemplateBg(selectedTemplate.bgClass);
+      fp.className = ''; // remove any leftover class
+      fp.style.cssText = `background:${getTemplateBg(selectedTemplate.bgClass)};border-radius:16px;overflow:hidden;width:100%;max-width:340px;height:280px;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
+      fp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5rem', '1.7rem').replace('1.4rem', '1.6rem')}">${title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${message}</p>`;
+      gsap.from(fp, { scale: 0.95, opacity: 0.5, duration: 0.4, ease: 'back.out(1.5)' });
+    }
 
-// ===============================
-// TEMPLATE SELECTION — FIXED to persist
-// ===============================
-function selectTemplate(id) {
-  selectedTemplate = templates.find(t => t.id === id);
-  // Mark card as selected visually
-  document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-  const card = document.querySelector(`[data-tpl-id="${id}"]`);
-  if (card) card.classList.add('selected');
-  // Show badge
-  document.getElementById('active-tpl-badge').style.display = 'inline-flex';
-  document.getElementById('active-tpl-name').textContent = selectedTemplate.name;
-  updateSelectedPreview();
-  updateFinalPreview(selectedTemplate.title, selectedTemplate.message);
-  scrollToSection('editor');
-  spawnColorParticles();
-  showToast(`"${selectedTemplate.name}" selected!`);
-}
+    // ===============================
+    // AI GENERATION — IMPROVED
+    // ===============================
+    async function generateWithAI() {
+      const prompt = document.getElementById('ai-prompt').value.trim();
+      if (!prompt) { showToast('Please enter a prompt first!'); return; }
+      if (currentProvider === 'gemini' && !savedApiKey) { showToast('⚠️ Paste your Gemini API key and click Connect first!'); return; }
 
-function selectAndEdit(id) {
-  selectTemplate(id);
-  document.getElementById('ai-prompt').focus();
-}
+      const btn = document.getElementById('generate-btn');
+      const thinking = document.getElementById('ai-thinking');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Generating…';
+      thinking.classList.add('show');
 
-function updateSelectedPreview() {
-  const el = document.getElementById('selected-template-display');
-  el.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass)}">${selectedTemplate.title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${selectedTemplate.message}</p>`;
-  el.className = '';
-  el.style.cssText = `width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;`;
-  document.getElementById('selected-template-display').parentElement.style.background = getTemplateBg(selectedTemplate.bgClass);
-}
+      const creativity = parseInt(document.getElementById('creativity-slider').value);
+      const temperatureMap = { 1: 0.3, 2: 0.4, 3: 0.5, 4: 0.6, 5: 0.7, 6: 0.8, 7: 0.9, 8: 1.0, 9: 1.1, 10: 1.2 };
+      const temperature = temperatureMap[creativity] || 0.9;
 
-function getTemplateBg(cls) {
-  const bgs = {
-    't-vibrant': 'linear-gradient(135deg,#FF6B35,#FFD700,#FF3CAC)',
-    't-dark': '#1a0030',
-    't-pastel': 'linear-gradient(135deg,#FFB3C6,#FFDAB9,#B8F0D3)',
-    't-cosmic': 'radial-gradient(ellipse,#0d0d2b,#1a0040)',
-    't-watercolor': 'linear-gradient(135deg,rgba(255,107,53,0.8),rgba(120,75,160,0.8),rgba(43,134,197,0.8))',
-    't-minimal': '#fff',
-    't-retro': '#2d1b00',
-    't-neon': '#000',
-  };
-  return bgs[cls] || '#1a0030';
-}
+      const modeInstructions = {
+        enhance: 'Enhance and beautify the greeting. Add vivid imagery, emotional depth, and festive energy. Make it memorable.',
+        rewrite: 'Completely rewrite the greeting with fresh, original phrasing. Keep the Holi theme but bring a new creative angle.',
+        poetic: 'Write in poetic, lyrical style — use metaphors of color, light, and celebration. Can use rhyme or free verse.',
+        funny: 'Make it lighthearted and fun! Add humor, wordplay, or a witty twist while keeping it warm and festive.',
+        formal: 'Use an elegant, formal tone suitable for professional or official Holi wishes. Dignified and gracious.',
+        kids: 'Simple, joyful, and exciting language perfect for children. Use playful words and fun imagery.'
+      };
 
-function updateFinalPreview(title, message) {
-  const fp = document.getElementById('final-preview');
-  // ALWAYS use selectedTemplate's bg — this fixes the "reset to default" bug
-  fp.style.background = getTemplateBg(selectedTemplate.bgClass);
-  fp.className = ''; // remove any leftover class
-  fp.style.cssText = `background:${getTemplateBg(selectedTemplate.bgClass)};border-radius:16px;overflow:hidden;width:340px;height:280px;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
-  fp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5rem','1.7rem').replace('1.4rem','1.6rem')}">${title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${message}</p>`;
-  gsap.from(fp, { scale: 0.95, opacity: 0.5, duration: 0.4, ease: 'back.out(1.5)' });
-}
+      const creativityNote = creativity >= 8
+        ? 'BE VERY CREATIVE. Surprise with unexpected metaphors, vivid imagery, and truly original phrasing.'
+        : creativity >= 5
+          ? 'Be creatively expressive. Go beyond generic phrases. Add vivid, specific details.'
+          : 'Make tasteful, polished improvements while staying close to the user intent.';
 
-// ===============================
-// AI GENERATION — IMPROVED
-// ===============================
-async function generateWithAI() {
-  const prompt = document.getElementById('ai-prompt').value.trim();
-  if (!prompt) { showToast('Please enter a prompt first!'); return; }
-  if (currentProvider === 'gemini' && !savedApiKey) { showToast('⚠️ Paste your Gemini API key and click Connect first!'); return; }
-
-  const btn = document.getElementById('generate-btn');
-  const thinking = document.getElementById('ai-thinking');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Generating…';
-  thinking.classList.add('show');
-
-  const creativity = parseInt(document.getElementById('creativity-slider').value);
-  const temperatureMap = { 1:0.3, 2:0.4, 3:0.5, 4:0.6, 5:0.7, 6:0.8, 7:0.9, 8:1.0, 9:1.1, 10:1.2 };
-  const temperature = temperatureMap[creativity] || 0.9;
-
-  const modeInstructions = {
-    enhance:  'Enhance and beautify the greeting. Add vivid imagery, emotional depth, and festive energy. Make it memorable.',
-    rewrite:  'Completely rewrite the greeting with fresh, original phrasing. Keep the Holi theme but bring a new creative angle.',
-    poetic:   'Write in poetic, lyrical style — use metaphors of color, light, and celebration. Can use rhyme or free verse.',
-    funny:    'Make it lighthearted and fun! Add humor, wordplay, or a witty twist while keeping it warm and festive.',
-    formal:   'Use an elegant, formal tone suitable for professional or official Holi wishes. Dignified and gracious.',
-    kids:     'Simple, joyful, and exciting language perfect for children. Use playful words and fun imagery.'
-  };
-
-  const creativityNote = creativity >= 8
-    ? 'BE VERY CREATIVE. Surprise with unexpected metaphors, vivid imagery, and truly original phrasing.'
-    : creativity >= 5
-    ? 'Be creatively expressive. Go beyond generic phrases. Add vivid, specific details.'
-    : 'Make tasteful, polished improvements while staying close to the user intent.';
-
-  const systemPrompt = `You are an expert Holi festival greeting card designer and creative copywriter.
+      const systemPrompt = `You are an expert Holi festival greeting card designer and creative copywriter.
 The user will describe how they want their greeting card customized.
 
 CURRENT TEMPLATE: "${selectedTemplate.name}" (style: ${selectedTemplate.style}, bgClass: ${selectedTemplate.bgClass})
@@ -1312,197 +2262,198 @@ CRITICAL RULES:
 4. The greeting should feel genuinely creative and appropriate for Holi festival.
 5. Keep the visual style consistent with the selected template's mood.`;
 
-  const userMsg = `User wants: "${prompt}"
+      const userMsg = `User wants: "${prompt}"
 
 Generate a creative, expressive Holi greeting card that goes beyond the literal words above. Make it beautiful and surprising.`;
 
-  try {
-    let title, message, bg, titleColor, messageColor, titleStyle, glow;
+      try {
+        let title, message, bg, titleColor, messageColor, titleStyle, glow;
 
-    if (currentProvider === 'gemini') {
-      // ---- GEMINI ----
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview:generateContent?key=${savedApiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: 'user', parts: [{ text: userMsg }] }],
-          generationConfig: {
-            temperature,
-            maxOutputTokens: 600,
-            topP: 0.95,
-            responseMimeType: 'application/json'
-          }
-        })
-      });
-      if (!res.ok) { const e = await res.json(); throw new Error('Gemini: ' + (e.error?.message || JSON.stringify(e))); }
-      const data = await res.json();
-      const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      if (!raw) throw new Error('Gemini returned empty response. Check your API key.');
-      const clean = raw.replace(/```json|```/g, '').trim();
-      ({ title, message, bg, titleColor, messageColor, titleStyle, glow } = JSON.parse(clean));
+        if (currentProvider === 'gemini') {
+          // ---- GEMINI ----
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview:generateContent?key=${savedApiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+              generationConfig: {
+                temperature,
+                maxOutputTokens: 600,
+                topP: 0.95,
+                responseMimeType: 'application/json'
+              }
+            })
+          });
+          if (!res.ok) { const e = await res.json(); throw new Error('Gemini: ' + (e.error?.message || JSON.stringify(e))); }
+          const data = await res.json();
+          const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (!raw) throw new Error('Gemini returned empty response. Check your API key.');
+          const clean = raw.replace(/```json|```/g, '').trim();
+          ({ title, message, bg, titleColor, messageColor, titleStyle, glow } = JSON.parse(clean));
 
-    } else {
-      // ---- CLAUDE (via Anthropic artifact proxy — no API key needed) ----
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 600,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userMsg }]
-        })
-      });
-      if (!res.ok) { const e = await res.json(); throw new Error('Claude: ' + (e.error?.message || JSON.stringify(e))); }
-      const data = await res.json();
-      const raw = data.content.map(c => c.text || '').join('');
-      if (!raw) throw new Error('Claude returned empty response.');
-      const clean = raw.replace(/```json|```/g, '').trim();
-      ({ title, message, bg, titleColor, messageColor, titleStyle, glow } = JSON.parse(clean));
-    }
+        } else {
+          // ---- CLAUDE (via Anthropic artifact proxy — no API key needed) ----
+          const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'claude-sonnet-4-20250514',
+              max_tokens: 600,
+              system: systemPrompt,
+              messages: [{ role: 'user', content: userMsg }]
+            })
+          });
+          if (!res.ok) { const e = await res.json(); throw new Error('Claude: ' + (e.error?.message || JSON.stringify(e))); }
+          const data = await res.json();
+          const raw = data.content.map(c => c.text || '').join('');
+          if (!raw) throw new Error('Claude returned empty response.');
+          const clean = raw.replace(/```json|```/g, '').trim();
+          ({ title, message, bg, titleColor, messageColor, titleStyle, glow } = JSON.parse(clean));
+        }
 
-    // Apply to preview — PRESERVING the selected template context
-    const fp = document.getElementById('final-preview');
-    fp.style.cssText = `background:${bg};border-radius:16px;overflow:hidden;width:340px;height:280px;box-shadow:${glow ? '0 0 40px '+glow : '0 20px 60px rgba(0,0,0,0.5)'};position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
-    fp.innerHTML = `
-      <h2 style="font-family:'Playfair Display',serif;font-size:1.7rem;color:${titleColor};${titleStyle||''}">${title}</h2>
+        // Apply to preview — PRESERVING the selected template context
+        const fp = document.getElementById('final-preview');
+        fp.style.cssText = `background:${bg};border-radius:16px;overflow:hidden;width:340px;height:280px;box-shadow:${glow ? '0 0 40px ' + glow : '0 20px 60px rgba(0,0,0,0.5)'};position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
+        fp.innerHTML = `
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.7rem;color:${titleColor};${titleStyle || ''}">${title}</h2>
       <p style="font-size:0.85rem;margin-top:10px;color:${messageColor}">${message}</p>
     `;
-    gsap.from(fp, { scale: 0.9, duration: 0.5, ease: 'back.out(1.5)' });
+        gsap.from(fp, { scale: 0.9, duration: 0.5, ease: 'back.out(1.5)' });
 
-    // Also update the left-side selected preview to reflect new content
-    // but KEEP the template badge and selection — do NOT reset selectedTemplate
-    const disp = document.getElementById('selected-template-display');
-    disp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5','1.3')}">${title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${message}</p>`;
+        // Also update the left-side selected preview to reflect new content
+        // but KEEP the template badge and selection — do NOT reset selectedTemplate
+        const disp = document.getElementById('selected-template-display');
+        disp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5', '1.3')}">${title}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${message}</p>`;
 
-    spawnColorParticles();
-    showToast(`✨ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} created your greeting!`);
+        spawnColorParticles();
+        showToast(`✨ ${currentProvider === 'gemini' ? 'Gemini' : 'Claude'} created your greeting!`);
 
-  } catch (err) {
-    console.error(err);
-    // Graceful fallback: still use selected template's style
-    const fp = document.getElementById('final-preview');
-    const fallbackBg = getTemplateBg(selectedTemplate.bgClass);
-    fp.style.cssText = `background:${fallbackBg};border-radius:16px;overflow:hidden;width:340px;height:280px;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
+      } catch (err) {
+        console.error(err);
+        // Graceful fallback: still use selected template's style
+        const fp = document.getElementById('final-preview');
+        const fallbackBg = getTemplateBg(selectedTemplate.bgClass);
+        fp.style.cssText = `background:${fallbackBg};border-radius:16px;overflow:hidden;width:100%;max-width:340px;height:280px;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:all 0.5s;`;
 
-    // Generate a creative fallback locally based on the prompt
-    const fallbackTitles = ['🌈 Happy Holi!', '🎨 Colors of Joy!', '✨ Rang Barse!', '🌸 Happy Holi!', '⚡ Holi Mubarak!'];
-    const fallbackMsgs = [
-      'May every color bring you a new dream and every splash fill your heart with cheer.',
-      'Wishing you a festival as vibrant and joyful as your spirit — Happy Holi!',
-      'Let the colors of Holi paint your world with happiness and your heart with love.',
-      'May this Holi drench you in the colors of love, laughter and togetherness.',
-    ];
-    const ft = fallbackTitles[Math.floor(Math.random() * fallbackTitles.length)];
-    const fm = fallbackMsgs[Math.floor(Math.random() * fallbackMsgs.length)];
-    fp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5rem','1.7rem')}">${ft}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${fm}</p>`;
-    showToast('✨ Greeting created! (Check your API key for AI mode)');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '✨ Generate with AI';
-    thinking.classList.remove('show');
-  }
-}
+        // Generate a creative fallback locally based on the prompt
+        const fallbackTitles = ['🌈 Happy Holi!', '🎨 Colors of Joy!', '✨ Rang Barse!', '🌸 Happy Holi!', '⚡ Holi Mubarak!'];
+        const fallbackMsgs = [
+          'May every color bring you a new dream and every splash fill your heart with cheer.',
+          'Wishing you a festival as vibrant and joyful as your spirit — Happy Holi!',
+          'Let the colors of Holi paint your world with happiness and your heart with love.',
+          'May this Holi drench you in the colors of love, laughter and togetherness.',
+        ];
+        const ft = fallbackTitles[Math.floor(Math.random() * fallbackTitles.length)];
+        const fm = fallbackMsgs[Math.floor(Math.random() * fallbackMsgs.length)];
+        fp.innerHTML = `<h2 style="${getH2Style(selectedTemplate.bgClass).replace('1.5rem', '1.7rem')}">${ft}</h2><p style="${getPStyle(selectedTemplate.bgClass)}">${fm}</p>`;
+        showToast('✨ Greeting created! (Check your API key for AI mode)');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '✨ Generate with AI';
+        thinking.classList.remove('show');
+      }
+    }
 
 
-// ===============================
-// UTILITIES
-// ===============================
-function clearPrompt() {
-  document.getElementById('ai-prompt').value = '';
-}
+    // ===============================
+    // UTILITIES
+    // ===============================
+    function clearPrompt() {
+      document.getElementById('ai-prompt').value = '';
+    }
 
-function useChip(el) {
-  document.getElementById('ai-prompt').value = el.textContent.replace(/^[^\s]+\s/, '');
-  document.getElementById('ai-prompt').focus();
-}
+    function useChip(el) {
+      document.getElementById('ai-prompt').value = el.textContent.replace(/^[^\s]+\s/, '');
+      document.getElementById('ai-prompt').focus();
+    }
 
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
 
-function spawnColorParticles() {
-  const colors = ['#FF3CAC','#FFD700','#00C851','#2B86C5','#FF6B35','#784BA0','#fff'];
-  for (let i = 0; i < 20; i++) {
-    const p = document.createElement('div');
-    p.className = 'color-particle';
-    p.style.cssText = `
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      left:${Math.random()*100}%;
-      top:${Math.random()*50}%;
-      animation-delay:${Math.random()*0.5}s;
-      width:${6+Math.random()*12}px;
-      height:${6+Math.random()*12}px;
+    function spawnColorParticles() {
+      const colors = ['#FF3CAC', '#FFD700', '#00C851', '#2B86C5', '#FF6B35', '#784BA0', '#fff'];
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'color-particle';
+        p.style.cssText = `
+      background:${colors[Math.floor(Math.random() * colors.length)]};
+      left:${Math.random() * 100}%;
+      top:${Math.random() * 50}%;
+      animation-delay:${Math.random() * 0.5}s;
+      width:${6 + Math.random() * 12}px;
+      height:${6 + Math.random() * 12}px;
     `;
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 3500);
-  }
-}
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 3500);
+      }
+    }
 
-function openModal() {
-  const fp = document.getElementById('final-preview');
-  const mp = document.getElementById('modal-preview');
-  mp.style.background = fp.style.background;
-  mp.innerHTML = fp.innerHTML;
-  document.getElementById('modal').classList.add('open');
-}
+    function openModal() {
+      const fp = document.getElementById('final-preview');
+      const mp = document.getElementById('modal-preview');
+      mp.style.background = fp.style.background;
+      mp.innerHTML = fp.innerHTML;
+      document.getElementById('modal').classList.add('open');
+    }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-}
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
 
-function downloadGreeting() {
-  showToast('📥 Download started! (Screenshot the preview)');
-}
+    function downloadGreeting() {
+      showToast('📥 Download started! (Screenshot the preview)');
+    }
 
-function shareGreeting() {
-  if (navigator.share) {
-    navigator.share({ title: 'Happy Holi!', text: 'Check out my Holi greeting made with HoliAI!' });
-  } else {
-    showToast('🔗 Link copied to clipboard!');
-    navigator.clipboard?.writeText(window.location.href);
-  }
-}
+    function shareGreeting() {
+      if (navigator.share) {
+        navigator.share({ title: 'Happy Holi!', text: 'Check out my Holi greeting made with HoliAI!' });
+      } else {
+        showToast('🔗 Link copied to clipboard!');
+        navigator.clipboard?.writeText(window.location.href);
+      }
+    }
 
-// Close modal on backdrop click
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+    // Close modal on backdrop click
+    document.getElementById('modal').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
 
-// Auto-select first template on load
-selectTemplate(templates[0].id);
+    // Auto-select first template on load
+    selectTemplate(templates[0].id);
 
-// Nav scroll effect
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  if (window.scrollY > 50) {
-    nav.style.background = 'rgba(10,0,18,0.95)';
-  } else {
-    nav.style.background = 'rgba(10,0,18,0.6)';
-  }
-});
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(10,0,18,0.95)';
+      } else {
+        nav.style.background = 'rgba(10,0,18,0.6)';
+      }
+    });
 
-// Parallax on hero splashes
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  document.querySelectorAll('.splash').forEach((s, i) => {
-    const speed = 0.1 + (i % 3) * 0.08;
-    s.style.transform = `translateY(${scrolled * speed}px)`;
-  });
-});
+    // Parallax on hero splashes
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      document.querySelectorAll('.splash').forEach((s, i) => {
+        const speed = 0.1 + (i % 3) * 0.08;
+        s.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
 
-// AI prompt enter key
-document.getElementById('ai-prompt').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && e.ctrlKey) generateWithAI();
-});
-</script>
+    // AI prompt enter key
+    document.getElementById('ai-prompt').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.ctrlKey) generateWithAI();
+    });
+  </script>
 </body>
+
 </html>
